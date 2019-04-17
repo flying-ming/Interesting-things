@@ -1,0 +1,51 @@
+例如
+struct Books
+{
+   char  title[50];
+   char  author[50];
+   char  subject[100];
+   int   book_id;
+} book;
+
+struct SIMPLE
+{
+    int a;
+    char b;
+    double c;
+};
+//用SIMPLE标签的结构体，另外声明了变量t1、t2、t3
+struct SIMPLE t1, t2[20], *t3;
+
+
+结构体内存大小对齐原则
+结构体变量的首地址能够被其最宽基本类型成员的大小所整除。
+结构体每个成员相对于结构体首地址的偏移量(offset)都是成员大小的整数倍，如有需要编译器会在成员之间加上填充字节(internal adding)。即结构体成员的末地址减去结构体首地址(第一个结构体成员的首地址)得到的偏移量都要是对应成员大小的整数倍。
+结构体的总大小为结构体最宽基本类型成员大小的整数倍，如有需要编译器会在成员末尾加上填充字节。
+以下例子：
+#include <stdio.h>
+
+typedef struct
+{
+    unsigned char a;
+    unsigned int  b;
+    unsigned char c;
+} debug_size1_t;
+typedef struct
+{
+    unsigned char a;
+    unsigned char b;
+    unsigned int  c;
+} debug_size2_t;
+
+int main(void)
+{
+    printf("debug_size1_t size=%lu,debug_size2_t size=%lu\r\n", sizeof(debug_size1_t), sizeof(debug_size2_t));
+    return 0;
+}
+编译执行输出结果：
+
+debug_size1_t size=12,debug_size2_t size=8
+结构体占用存储空间,以32位机为例
+
+ 1.debug_size1_t 存储空间分布为a(1byte)+空闲(3byte)+b(4byte)+c(1byte)+空闲(3byte)=12(byte)。
+ 1.debug_size2_t 存储空间分布为a(1byte)+b(1byte)+空闲(2byte)+c(4byte)=8(byte)。
